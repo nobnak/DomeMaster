@@ -1,6 +1,5 @@
 ﻿Shader "Unlit/DomeMaster" {
 	Properties {
-		_MainTex ("Texture", 2D) = "white" {}
         _Lod ("LOD", Range(0, 32)) = 0
 	}
 	SubShader {
@@ -8,10 +7,13 @@
 
 		Pass {
 			CGPROGRAM
+			#pragma target 3.0
 			#pragma vertex vert
 			#pragma fragment frag
 
-            #define PI_HALF 1.57079
+			#define PI      3.141592
+            #define PI_HALF (0.5 * PI)
+            #define PI_TWO  (2.0 * PI)
 			
 			#include "UnityCG.cginc"
             #include "UnityShaderVariables.cginc"
@@ -25,29 +27,29 @@
 				float4 vertex : SV_POSITION;
 			};
 
-			sampler2D _MainTex;
-			float4 _MainTex_ST;
+			UNITY_DECLARE_TEXCUBE(_GlobalDome);
             float _Lod;
 			
 			v2f vert (appdata v) {
-                float2 xy = TRANSFORM_TEX((2 * v.uv - 1), _MainTex);
-
 				v2f o;
 				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
-				o.uv = xy;
+				o.uv = v.uv;
 				return o;
 			}
 			
 			fixed4 frag (v2f i) : SV_Target {
-                float r = saturate(sqrt(dot(i.uv, i.uv)));
-                float theta = atan2(i.uv.y, i.uv.x);
+				float2 xy = 2.0 * frac(float2(2.0, 1.0) * i.uv) - 1.0;
+				float dir = sign(2.0 * i.uv.x - 1.0);
+
+                float r = sqrt(dot(xy, xy));
+                float theta = atan2(xy.y, xy.x);
                 float phi = r * PI_HALF;
 
                 float projxy = sin(phi);
                 float3 v = float3(cos(theta), sin(theta), cos(phi)) * float3(projxy, projxy, 1);
-                v = mul(_Object2World, float4(v, 0));
-				float4 c = UNITY_SAMPLE_TEXCUBE_LOD(unity_SpecCube0, v, _Lod);
-				return c;
+                v = mul(_Object2World, float4(dir * v, 0));
+				float4 c = UNITY_SAMPLE_TEXCUBE_LOD(_GlobalDome, v, _Lod);
+				return r <= 1.0 ? c : 0;
 			}
 			ENDCG
 		}

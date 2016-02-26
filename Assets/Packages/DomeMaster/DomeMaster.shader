@@ -28,7 +28,7 @@
 				float4 vertex : SV_POSITION;
 			};
 
-			UNITY_DECLARE_TEXCUBE(_GlobalDome);
+			UNITY_DECLARE_TEXCUBE(_DomeMasterCube);
             float _Lod;
             float _Dir;
 			
@@ -51,7 +51,7 @@
                 float projxy = sin(phi);
                 float3 v = float3(cos(theta), sin(theta), cos(phi)) * float3(projxy, projxy, 1);
                 v = mul(_Object2World, float4(_Dir * v, 0));
-				float4 c = UNITY_SAMPLE_TEXCUBE_LOD(_GlobalDome, v, _Lod);
+				float4 c = UNITY_SAMPLE_TEXCUBE_LOD(_DomeMasterCube, v, _Lod);
 				return r <= 1.0 ? c : 0;
 			}
 			ENDCG

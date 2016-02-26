@@ -1,11 +1,10 @@
 fileFormatVersion: 2
-guid: 312f0619de0fa0844b0f71730865d7f9
-timeCreated: 1456511185
+guid: d090d58eed2634644965a147b016fe86
+timeCreated: 1456513375
 licenseType: Pro
 MonoImporter:
   serializedVersion: 2
-  defaultReferences:
-  - domeMasterMat: {fileID: 2100000, guid: 30a36b277d2573d4cb26efe940af30a1, type: 2}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

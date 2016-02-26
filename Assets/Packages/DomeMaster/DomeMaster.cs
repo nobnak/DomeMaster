@@ -6,6 +6,7 @@ using System.Collections;
 public class DomeMaster : MonoBehaviour {
 	public string shaderProperty = "_GlobalDome";
 	public TextureEvent OnUpdateCubemap;
+	public bool generateMips = false;
 
 	public int lod = 10;
 
@@ -17,18 +18,17 @@ public class DomeMaster : MonoBehaviour {
 	}
 	void Update() {
 		var res = (1 << Mathf.Clamp(lod, 1, 13));
-		if (_cube == null || _cube.width != res) {
+		if (_cube == null || _cube.width != res || _cube.generateMips != generateMips) {
 			Debug.LogFormat ("Create Cubemap {0}x{1}", res, res);
 			DestroyImmediate (_cube);
 			_cube = new RenderTexture (res, res, 24);
 			_cube.filterMode = FilterMode.Bilinear;
 			_cube.isCubemap = true;
-			_cube.generateMips = false;
+			_cube.generateMips = generateMips;
+			_cube.useMipMap = generateMips;
 			_cube.Create ();
 			OnUpdateCubemap.Invoke (_cube);
 		}
-		//_attachedCam.CopyFrom (Camera.main);
-		//_attachedCam.depth -= 1;
 		_attachedCam.enabled = false;
 		_attachedCam.RenderToCubemap (_cube);
 		Shader.SetGlobalTexture (shaderProperty, _cube);

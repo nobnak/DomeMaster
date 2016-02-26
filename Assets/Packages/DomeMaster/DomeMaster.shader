@@ -1,6 +1,7 @@
 ﻿Shader "Unlit/DomeMaster" {
 	Properties {
         _Lod ("LOD", Range(0, 32)) = 0
+        _Dir ("Direction", Range(-1, 1)) = 1
 	}
 	SubShader {
 		Tags { "RenderType"="Opaque" }
@@ -29,17 +30,19 @@
 
 			UNITY_DECLARE_TEXCUBE(_GlobalDome);
             float _Lod;
+            float _Dir;
 			
 			v2f vert (appdata v) {
+				float2 xy = 2.0 * v.uv - 1.0;
+
 				v2f o;
 				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
-				o.uv = v.uv;
+				o.uv = xy;
 				return o;
 			}
 			
 			fixed4 frag (v2f i) : SV_Target {
-				float2 xy = 2.0 * frac(float2(2.0, 1.0) * i.uv) - 1.0;
-				float dir = sign(2.0 * i.uv.x - 1.0);
+				float2 xy = i.uv;
 
                 float r = sqrt(dot(xy, xy));
                 float theta = atan2(xy.y, xy.x);
@@ -47,7 +50,7 @@
 
                 float projxy = sin(phi);
                 float3 v = float3(cos(theta), sin(theta), cos(phi)) * float3(projxy, projxy, 1);
-                v = mul(_Object2World, float4(dir * v, 0));
+                v = mul(_Object2World, float4(_Dir * v, 0));
 				float4 c = UNITY_SAMPLE_TEXCUBE_LOD(_GlobalDome, v, _Lod);
 				return r <= 1.0 ? c : 0;
 			}

@@ -5,4 +5,4 @@
 
 [UnityPackage](DomeMaster.unitypackage)
 
-[![Thumbnail](Thumbnail.jpg)](https://vimeo.com/156955230)
+[![Thumbnail](https://i.vimeocdn.com/video/558109943_640.jpg)](https://vimeo.com/156955230)

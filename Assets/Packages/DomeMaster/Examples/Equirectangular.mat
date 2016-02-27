@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Front
-  m_Shader: {fileID: 4800000, guid: 89ce4d0a006861f4d9f8be5cbf1ca5aa, type: 3}
+  m_Name: Equirectangular
+  m_Shader: {fileID: 4800000, guid: 293069d61c57876448a87adc9bcdc7ec, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_CustomRenderQueue: 2000

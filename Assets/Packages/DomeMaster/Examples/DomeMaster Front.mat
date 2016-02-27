@@ -6,7 +6,7 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Back
+  m_Name: DomeMaster Front
   m_Shader: {fileID: 4800000, guid: 89ce4d0a006861f4d9f8be5cbf1ca5aa, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
@@ -30,5 +30,5 @@ Material:
       data:
         first:
           name: _Dir
-        second: -1
+        second: 1
     m_Colors: {}

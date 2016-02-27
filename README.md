@@ -1,7 +1,8 @@
-# DomeMaster
+# DomeMaster Texture Generator for Unity
 
-Dome Master Texture Generator for Unity
+ * DomeMaster Projection
+ * Equirectangular Projection
 
 [UnityPackage](DomeMaster.unitypackage)
 
-![Thumbnail](Thumbnail.jpg)
+[![Thumbnail](Thumbnail.jpg)](https://vimeo.com/156955230)

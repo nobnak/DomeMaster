@@ -466,7 +466,8 @@ MonoBehaviour:
     m_TypeName: DomeMasterSystem.DomeMaster+TextureEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   generateMips: 0
-  lod: 10
+  lod: 11
+  faceMask: -1
 --- !u!20 &411533129
 Camera:
   m_ObjectHideFlags: 0

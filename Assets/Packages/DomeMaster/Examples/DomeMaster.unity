@@ -460,13 +460,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 312f0619de0fa0844b0f71730865d7f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textureType: 1
   OnUpdateCubemap:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: DomeMasterSystem.DomeMaster+TextureEvent, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
   generateMips: 0
-  lod: 10
+  lod: 11
+  filterMode: 2
+  anisoLevel: 16
+  faceMask: -1
 --- !u!20 &411533129
 Camera:
   m_ObjectHideFlags: 0
@@ -508,7 +512,7 @@ Transform:
   m_PrefabParentObject: {fileID: 414594, guid: ee124bd06b1a6ac4d86157145e9bb688, type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 411533127}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.14956018, y: 0.2965793, z: 0.079057105, w: 0.93990564}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []

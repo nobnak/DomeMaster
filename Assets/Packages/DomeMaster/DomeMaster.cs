@@ -5,6 +5,7 @@ namespace DomeMasterSystem {
 	[ExecuteInEditMode]
 	[RequireComponent(typeof(Camera))]
 	public class DomeMaster : MonoBehaviour {
+		public enum TextureTypeEnum { RenderTexture = 0, CubeMap }
 		[System.Flags]
 		public enum FaceMaskFlags { 
 			Right = 1 << 0, 
@@ -16,45 +17,51 @@ namespace DomeMasterSystem {
 
 		public const string PROP_DOME_MASTER_CUBE = "_DomeMasterCube";
 		public const string PROP_DIRECTION = "_Dir";
-		public enum DirEnum { Front = 1, Back = -1 }
+
+		public TextureTypeEnum textureType;
 		public TextureEvent OnUpdateCubemap;
 		public bool generateMips = false;
 		public int lod = 10;
+		public FilterMode filterMode = FilterMode.Trilinear;
+		public int anisoLevel = 16;
 		[InspectorFlags]
 		public FaceMaskFlags faceMask;
 
 		Camera _attachedCam;
-		RenderTexture _cube;
+		RenderTexture _cubert;
 
 		void OnEnable() {
 			_attachedCam = GetComponent<Camera> ();
-
-			Debug.LogFormat ("CubemapFace {0}={1}", CubemapFace.PositiveX, (int)CubemapFace.PositiveX);
 		}
 		void Update() {
 			var res = (1 << Mathf.Clamp(lod, 1, 13));
-			if (_cube == null || _cube.width != res || _cube.generateMips != generateMips) {
-				Debug.LogFormat ("Create Cubemap {0}x{1}", res, res);
-				Release();
-				_cube = new RenderTexture (res, res, 24);
-				_cube.filterMode = FilterMode.Bilinear;
-				_cube.isCubemap = true;
-				_cube.generateMips = generateMips;
-				_cube.useMipMap = generateMips;
-				_cube.Create ();
-			}
-			_attachedCam.enabled = false;
-			_attachedCam.RenderToCubemap (_cube, (int)faceMask);
-			Shader.SetGlobalTexture(PROP_DOME_MASTER_CUBE, _cube);
 
-			OnUpdateCubemap.Invoke (_cube);
+			CheckInitRenderTexture(res, ref _cubert);
+			_attachedCam.RenderToCubemap (_cubert, (int)faceMask);
+			_attachedCam.enabled = false;
+			Shader.SetGlobalTexture(PROP_DOME_MASTER_CUBE, _cubert);
+			OnUpdateCubemap.Invoke (_cubert);
 		}
 		void OnDisable() {
 			Release ();
 		}
 
 		void Release() {
-			DestroyImmediate (_cube);
+			DestroyImmediate (_cubert);
+		}
+
+		void CheckInitRenderTexture (int res, ref RenderTexture rt) {
+			if (rt == null || rt.width != res || rt.generateMips != generateMips) {
+				Release ();
+				rt = new RenderTexture (res, res, 24);
+				rt.filterMode = filterMode;
+				rt.anisoLevel = anisoLevel;
+				rt.isCubemap = true;
+				rt.generateMips = generateMips;
+				rt.useMipMap = generateMips;
+				rt.Create ();
+				Debug.LogFormat ("Create Cubemap RenderTexture {0}x{1}", res, res);
+			}
 		}
 
 		[System.Serializable]

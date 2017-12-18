@@ -51,13 +51,13 @@ namespace DomeMasterSystem {
 		}
 
 		void CheckInitRenderTexture (int res, ref RenderTexture rt) {
-			if (rt == null || rt.width != res || rt.generateMips != generateMips) {
+			if (rt == null || rt.width != res || rt.autoGenerateMips != generateMips) {
 				Release ();
 				rt = new RenderTexture (res, res, 24);
 				rt.filterMode = filterMode;
 				rt.anisoLevel = anisoLevel;
 				rt.isCubemap = true;
-				rt.generateMips = generateMips;
+				rt.autoGenerateMips = generateMips;
 				rt.useMipMap = generateMips;
 				rt.Create ();
 				Debug.LogFormat ("Create Cubemap RenderTexture {0}x{1}", res, res);

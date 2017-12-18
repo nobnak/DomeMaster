@@ -1,4 +1,6 @@
-﻿Shader "Unlit/Sphere" {
+﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Unlit/Sphere" {
 	Properties {
 		_MainTex ("Texture", 2D) = "white" {}
         _Color ("Color", Color) = (0.5,0.5,0.5,0.5)
@@ -30,7 +32,7 @@
 			
 			v2f vert (appdata v) {
 				v2f o;
-				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
+				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
 				return o;
 			}

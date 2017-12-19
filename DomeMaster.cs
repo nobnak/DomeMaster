@@ -5,7 +5,6 @@ namespace DomeMasterSystem {
 	[ExecuteInEditMode]
 	[RequireComponent(typeof(Camera))]
 	public class DomeMaster : MonoBehaviour {
-		public enum TextureTypeEnum { RenderTexture = 0, CubeMap }
 		[System.Flags]
 		public enum FaceMaskFlags { 
 			Right = 1 << 0, 
@@ -17,8 +16,7 @@ namespace DomeMasterSystem {
 
 		public const string PROP_DOME_MASTER_CUBE = "_DomeMasterCube";
 		public const string PROP_DIRECTION = "_Dir";
-
-		public TextureTypeEnum textureType;
+        
 		public TextureEvent OnUpdateCubemap;
 		public bool generateMips = false;
 		public int lod = 10;

@@ -56,7 +56,7 @@ namespace DomeMasterSystem {
 				rt = new RenderTexture (res, res, 24);
 				rt.filterMode = filterMode;
 				rt.anisoLevel = anisoLevel;
-				rt.isCubemap = true;
+                rt.dimension = UnityEngine.Rendering.TextureDimension.Cube;
 				rt.autoGenerateMips = generateMips;
 				rt.useMipMap = generateMips;
 				rt.Create ();

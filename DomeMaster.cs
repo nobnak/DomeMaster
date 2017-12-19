@@ -54,12 +54,11 @@ namespace DomeMasterSystem {
 			if (rt == null || rt.width != res || rt.autoGenerateMips != generateMips) {
 				Release ();
 				rt = new RenderTexture (res, res, 24);
-				rt.filterMode = filterMode;
-				rt.anisoLevel = anisoLevel;
                 rt.dimension = UnityEngine.Rendering.TextureDimension.Cube;
-				rt.autoGenerateMips = generateMips;
+                rt.filterMode = filterMode;
+                rt.anisoLevel = anisoLevel;
+                rt.autoGenerateMips = generateMips;
 				rt.useMipMap = generateMips;
-				rt.Create ();
 				Debug.LogFormat ("Create Cubemap RenderTexture {0}x{1}", res, res);
 			}
 		}

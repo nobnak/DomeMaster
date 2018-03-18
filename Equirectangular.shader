@@ -1,8 +1,6 @@
-﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
-// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
-Shader "Unlit/Equirectangular" {
+﻿Shader "Unlit/Equirectangular" {
 	Properties {
+		_MainTex ("Main Texture", Cube) = "gray" {}
         _Lod ("LOD", Range(0, 32)) = 0
 	}
 	SubShader {
@@ -20,6 +18,7 @@ Shader "Unlit/Equirectangular" {
 			
 			#include "UnityCG.cginc"
             #include "UnityShaderVariables.cginc"
+			#include "Quaternion.cginc"
 
 			struct appdata {
 				float4 vertex : POSITION;
@@ -30,15 +29,16 @@ Shader "Unlit/Equirectangular" {
 				float4 vertex : SV_POSITION;
 			};
 
-			UNITY_DECLARE_TEXCUBE(_DomeMasterCube);
+			UNITY_DECLARE_TEXCUBE(_MainTex);
             float _Lod;
             float _Dir;
+			float4 _RotationQuat;
 			
 			v2f vert (appdata v) {
 				float2 xy = float2(PI, PI_HALF) * (2.0 * v.uv - 1.0);
 
 				v2f o;
-				o.vertex = UnityObjectToClipPos(float4(float3(2, 1, 1) * v.vertex.xyz, 1));
+				o.vertex = UnityObjectToClipPos(v.vertex);
 				o.uv = xy;
 				return o;
 			}
@@ -48,9 +48,9 @@ Shader "Unlit/Equirectangular" {
 
 				float projxz = cos(xy.y);
                 float3 v = float3(sin(xy.x), 1.0, cos(xy.x)) * float3(projxz, sin(xy.y), projxz);
-                v = mul(unity_ObjectToWorld, float4(v, 0));
+				v = qrotate(_RotationQuat, v);
 
-				float4 c = UNITY_SAMPLE_TEXCUBE_LOD(_DomeMasterCube, v, _Lod);
+				float4 c = UNITY_SAMPLE_TEXCUBE_LOD(_MainTex, v, _Lod);
 				return c;
 			}
 			ENDCG

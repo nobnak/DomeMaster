@@ -5,6 +5,7 @@ namespace DomeMasterSystem {
 	[ExecuteInEditMode]
 	[RequireComponent(typeof(Camera))]
 	public class DomeMaster : MonoBehaviour {
+		public enum TextureTypeEnum { RenderTexture = 0, CubeMap }
 		[System.Flags]
 		public enum FaceMaskFlags { 
 			Right = 1 << 0, 
@@ -13,11 +14,12 @@ namespace DomeMasterSystem {
 			Bottom = 1 << 3, 
 			Front = 1 << 4,
 			Back = 1 << 5 }
-        
-		public const string PROP_DIRECTION = "_Dir";
-        public const string PROP_ROTATION_QUATERNION = "_RotationQuat";
 
-        public TextureEvent OnUpdateCubemap;
+		public const string PROP_DOME_MASTER_CUBE = "_DomeMasterCube";
+		public const string PROP_DIRECTION = "_Dir";
+
+		public TextureTypeEnum textureType;
+		public TextureEvent OnUpdateCubemap;
 		public bool generateMips = false;
 		public int lod = 10;
 		public FilterMode filterMode = FilterMode.Trilinear;
@@ -25,20 +27,10 @@ namespace DomeMasterSystem {
 		[InspectorFlags]
 		public FaceMaskFlags faceMask;
 
-        [SerializeField]
-        protected Transform rotationTr;
-        [SerializeField]
-        protected Material domemasterFrontMat;
-        [SerializeField]
-        protected Material domemasterBackMat;
-        [SerializeField]
-        protected Material equirectangularMat;
-
 		Camera _attachedCam;
 		RenderTexture _cubert;
 
-        #region Unity
-        void OnEnable() {
+		void OnEnable() {
 			_attachedCam = GetComponent<Camera> ();
 		}
 		void Update() {
@@ -47,32 +39,14 @@ namespace DomeMasterSystem {
 			CheckInitRenderTexture(res, ref _cubert);
 			_attachedCam.RenderToCubemap (_cubert, (int)faceMask);
 			_attachedCam.enabled = false;
+			Shader.SetGlobalTexture(PROP_DOME_MASTER_CUBE, _cubert);
 			OnUpdateCubemap.Invoke (_cubert);
 		}
 		void OnDisable() {
 			Release ();
 		}
-        private void OnGUI() {
-            if (Event.current.type != EventType.Repaint)
-                return;
 
-            var r = (rotationTr != null ? rotationTr.rotation : Quaternion.identity);
-            var rotationVec4 = new Vector4(r.x, r.y, r.z, r.w);
-
-            if (equirectangularMat != null)
-                equirectangularMat.SetVector(PROP_ROTATION_QUATERNION, rotationVec4);
-            if (domemasterFrontMat != null)
-                domemasterFrontMat.SetVector(PROP_ROTATION_QUATERNION, rotationVec4);
-            if (domemasterBackMat != null)
-                domemasterBackMat.SetVector(PROP_ROTATION_QUATERNION, rotationVec4);
-
-            Graphics.DrawTexture(new Rect(10f, 10f, 400f, 200f), _cubert, equirectangularMat);
-            Graphics.DrawTexture(new Rect(10f, 220f, 200f, 200f), _cubert, domemasterFrontMat);
-            Graphics.DrawTexture(new Rect(210f, 220f, 200f, 200f), _cubert, domemasterBackMat);
-        }
-        #endregion
-
-        void Release() {
+		void Release() {
 			DestroyImmediate (_cubert);
 		}
 

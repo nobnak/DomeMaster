@@ -1,6 +1,5 @@
 ﻿Shader "Unlit/DomeMaster" {
 	Properties {
-		_MainTex ("Main Texture", Cube) = "gray" {}
         _Lod ("LOD", Range(0, 32)) = 0
         _Dir ("Direction", Range(-1, 1)) = 1
 	}
@@ -19,7 +18,6 @@
 			
 			#include "UnityCG.cginc"
             #include "UnityShaderVariables.cginc"
-			#include "Quaternion.cginc"
 
 			struct appdata {
 				float4 vertex : POSITION;
@@ -30,10 +28,9 @@
 				float4 vertex : SV_POSITION;
 			};
 
-			UNITY_DECLARE_TEXCUBE(_MainTex);
+			UNITY_DECLARE_TEXCUBE(_DomeMasterCube);
             float _Lod;
             float _Dir;
-			float4 _RotationQuat;
 			
 			v2f vert (appdata v) {
 				float2 xy = 2.0 * v.uv - 1.0;
@@ -53,10 +50,8 @@
 
                 float projxy = sin(phi);
                 float3 v = float3(cos(theta), sin(theta), cos(phi)) * float3(projxy, projxy, 1);
-				v = qrotate(_RotationQuat, v);
-                v *= _Dir;
-
-				float4 c = UNITY_SAMPLE_TEXCUBE_LOD(_MainTex, v, _Lod);
+                v = mul(unity_ObjectToWorld, float4(_Dir * v, 0));
+				float4 c = UNITY_SAMPLE_TEXCUBE_LOD(_DomeMasterCube, v, _Lod);
 				return r <= 1.0 ? c : 0;
 			}
 			ENDCG

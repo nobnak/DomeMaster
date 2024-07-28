@@ -1,0 +1,14 @@
+{
+  "author": {
+    "name": "Nakata Nobuyuki",
+    "email": "nobu.nakata@gmail.com"
+  },
+  "name": "jp.nobnak.dome_master",
+  "displayName": "Dome Master",
+  "version": "1.0.0",
+  "samples": [
+    {}
+  ],
+  "dependencies": {
+  }
+}

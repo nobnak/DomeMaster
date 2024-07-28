@@ -135,6 +135,12 @@
       },
       "url": "https://packages.unity.com"
     },
+    "jp.nobnak.dome_master": {
+      "version": "file:jp.nobnak.dome_master",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,

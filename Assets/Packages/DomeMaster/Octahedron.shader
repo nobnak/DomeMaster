@@ -1,7 +1,9 @@
-﻿Shader "Unlit/DomeMaster" {
+﻿// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Unlit/Equirectangular" {
     Properties {
         _Lod ("LOD", Range(0, 32)) = 0
-        [KeywordEnum(Forward, Backward)] _Dir ("Direction", float) = 0
     }
     SubShader {
         Tags { "RenderType"="Opaque" }
@@ -12,11 +14,9 @@
             #pragma vertex vert
             #pragma fragment frag
 
-            #pragma multi_compile _DIR_FORWARD _DIR_BACKWARD
-
-            #define PI      3.141592
-            #define PI_HALF (0.5 * PI)
-            #define PI_TWO  (2.0 * PI)
+            #define PI			3.141592
+            #define PI_HALF		(0.5 * PI)
+            #define PI_TWO		(2.0 * PI)
             
             #include "UnityCG.cginc"
             #include "UnityShaderVariables.cginc"
@@ -33,27 +33,20 @@
 
             UNITY_DECLARE_TEXCUBE(_DomeMasterCube);
             float _Lod;
+            float _Dir;
             
             v2f vert (appdata v) {
                 v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
+                o.vertex = UnityObjectToClipPos(float4(float3(2, 1, 1) * v.vertex.xyz, 1));
                 o.uv = v.uv;
                 return o;
             }
             
             fixed4 frag (v2f i) : SV_Target {
-                float dir = 1;
-                #if defined(_DIR_BACKWARD)
-                dir *= -1;
-                #endif
-
-                float3 v = DomeMaster_Decode(i.uv);
-                v = mul(unity_ObjectToWorld, float4(dir * v, 0));
+                float3 v = Octahedron_Decode(i.uv);
+                v = mul(unity_ObjectToWorld, float4(v, 0));
                 float4 c = UNITY_SAMPLE_TEXCUBE_LOD(_DomeMasterCube, v, _Lod);
-                
-                float2 xy = 2.0 * i.uv - 1.0;
-                float r = sqrt(dot(xy, xy));
-                return r <= 1.0 ? c : 0;
+                return c;
             }
             ENDCG
         }

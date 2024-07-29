@@ -1,8 +1,18 @@
-# DomeMaster Texture Generator for Unity
+# DomeMaster Generator for Unity
 
- * DomeMaster Projection
- * Equirectangular Projection
+## Supported format
+ * DomeMaster projection
+ * Equirectangular projection
+ * Signed Octahedron projection[^1]
 
-[UnityPackage](DomeMaster.unitypackage)
+## Installation
+Add scoped repository:
+- URL: https://package.openupm.com
+- Scope: jp.nobnak
 
-[![Thumbnail](https://i.vimeocdn.com/video/558109943_640.jpg)](https://vimeo.com/156955230)
+Find and install "Dome Master" on Package Manager.
+
+[Example project](DomeMaster/tree/master/Assets/Examples)
+
+## References
+[^1]: [Signed Octahedron Normal Encoding](https://johnwhite3d.blogspot.com/)

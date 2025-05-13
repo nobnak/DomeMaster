@@ -552,8 +552,8 @@ Transform:
   m_GameObject: {fileID: 227797892}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7, y: 1, z: 0}
-  m_LocalScale: {x: 8, y: 8, z: 8}
+  m_LocalPosition: {x: -3, y: -6.35, z: 0}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 885582904}
@@ -686,15 +686,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 312f0619de0fa0844b0f71730865d7f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textureType: 1
-  OnUpdateCubemap:
-    m_PersistentCalls:
-      m_Calls: []
-  generateMips: 0
-  lod: 11
-  filterMode: 2
-  anisoLevel: 16
-  faceMask: -1
+  events:
+    OnUpdateCubemap:
+      m_PersistentCalls:
+        m_Calls: []
+  config:
+    globalCubeTexName: _DomeMasterCube
+    textureType: 0
+    generateMips: 0
+    lod: 10
+    filterMode: 2
+    anisoLevel: 16
+    faceMask: -1
 --- !u!20 &411533129
 Camera:
   m_ObjectHideFlags: 0
@@ -932,8 +935,8 @@ Transform:
   m_GameObject: {fileID: 691636275}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4, y: -8, z: 0}
-  m_LocalScale: {x: 8, y: 8, z: 8}
+  m_LocalPosition: {x: -3, y: -11.65, z: 0}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 139030925}
@@ -1375,8 +1378,8 @@ Transform:
   m_GameObject: {fileID: 1458241704}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10, y: 10, z: 0}
-  m_LocalScale: {x: 8, y: 8, z: 8}
+  m_LocalPosition: {x: -3, y: 11.11, z: 0}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1892037865}

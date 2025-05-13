@@ -5,8 +5,11 @@
   },
   "name": "jp.nobnak.dome_master",
   "displayName": "Dome Master",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "samples": [
     {}
-  ]
+  ],
+  "dependencies": {
+    "com.unity.render-pipelines.core": "14.0.12"
+  }
 }

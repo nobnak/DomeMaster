@@ -9,43 +9,56 @@ namespace DomeMasterSystem {
         [SerializeField] protected Events events = new();
 		[SerializeField] protected Config config = new();
 
+        bool valid;
         Camera _attachedCam;
 		RenderTexture _cubert;
 
 		void OnEnable() {
+            valid = false;
 			_attachedCam = GetComponent<Camera> ();
             _attachedCam.enabled = false;
         }
 		void Update() {
 			var res = (1 << Mathf.Clamp(config.lod, 1, 13));
 
-			CheckInitRenderTexture(res, ref _cubert);
+            if (!valid || _cubert == null || _cubert.width != res) {
+                ReleaseCubemap();
+                _cubert = InitCubemap(res);
+            }
 			_attachedCam.RenderToCubemap(_cubert, (int)config.faceMask);
             if (!string.IsNullOrEmpty(config.globalCubeTexName))
                 Shader.SetGlobalTexture(config.globalCubeTexName, _cubert);
 			events.OnUpdateCubemap?.Invoke(_cubert);
 		}
 		void OnDisable() {
-			ReleaseTexture ();
+			ReleaseCubemap ();
 		}
+        private void OnValidate() {
+            valid = false;
+        }
 
-		void ReleaseTexture() {
+        void ReleaseCubemap() {
             CoreUtils.Destroy(_cubert);
             _cubert = null;
         }
 
-		void CheckInitRenderTexture (int res, ref RenderTexture rt) {
-			if (rt == null || rt.width != res || rt.autoGenerateMips != config.generateMips) {
-				ReleaseTexture ();
-				rt = new RenderTexture (res, res, 24);
-                rt.dimension = TextureDimension.Cube;
-                rt.filterMode = config.filterMode;
-                rt.anisoLevel = config.anisoLevel;
-                rt.autoGenerateMips = config.generateMips;
-				rt.useMipMap = config.generateMips;
-				Debug.LogFormat ("Create Cubemap RenderTexture {0}x{1}", res, res);
-			}
-		}
+		void CheckInitCubeMap (int res, ref RenderTexture cubemap) {
+			if (cubemap == null || cubemap.width != res || cubemap.autoGenerateMips != config.generateMips) {
+                ReleaseCubemap();
+                cubemap = InitCubemap(res);
+            }
+        }
+
+        private RenderTexture InitCubemap(int res) {
+            var cubemap = new RenderTexture(res, res, 24);
+            cubemap.dimension = TextureDimension.Cube;
+            cubemap.filterMode = config.filterMode;
+            cubemap.anisoLevel = config.anisoLevel;
+            cubemap.autoGenerateMips = true;
+            cubemap.useMipMap = config.generateMips;
+            Debug.LogFormat("Create Cubemap RenderTexture {0}x{1}", res, res);
+            return cubemap;
+        }
 
         #region declarations
         public const string PROP_DIRECTION = "_Dir";

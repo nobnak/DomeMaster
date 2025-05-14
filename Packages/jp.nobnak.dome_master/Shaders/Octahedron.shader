@@ -13,6 +13,7 @@ Shader "Unlit/Octahedron" {
             #pragma target 3.0
             #pragma vertex vert
             #pragma fragment frag
+            #pragma multi_compile ___ Blit
 
             #define PI			3.141592
             #define PI_HALF		(0.5 * PI)
@@ -37,8 +38,13 @@ Shader "Unlit/Octahedron" {
             
             v2f vert (appdata v) {
                 v2f o;
+                #ifdef Blit
+                o.vertex = UnityObjectToClipPos(v.vertex);
+                o.uv = v.uv;
+                #else
                 o.vertex = UnityObjectToClipPos(float4(float3(2, 1, 1) * v.vertex.xyz, 1));
                 o.uv = v.uv;
+                #endif
                 return o;
             }
             

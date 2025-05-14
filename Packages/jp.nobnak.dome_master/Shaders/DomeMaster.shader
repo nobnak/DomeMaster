@@ -11,7 +11,8 @@
             #pragma target 3.0
             #pragma vertex vert
             #pragma fragment frag
-
+            
+            #pragma multi_compile ___ Blit
             #pragma multi_compile _DIR_FORWARD _DIR_BACKWARD
 
             #define PI      3.141592

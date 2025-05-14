@@ -22,6 +22,7 @@ namespace DomeMasterSystem {
 			var res = (1 << Mathf.Clamp(config.lod, 1, 13));
 
             if (!valid || _cubert == null || _cubert.width != res) {
+                valid = true;
                 ReleaseCubemap();
                 _cubert = InitCubemap(res);
             }
@@ -40,13 +41,6 @@ namespace DomeMasterSystem {
         void ReleaseCubemap() {
             CoreUtils.Destroy(_cubert);
             _cubert = null;
-        }
-
-		void CheckInitCubeMap (int res, ref RenderTexture cubemap) {
-			if (cubemap == null || cubemap.width != res || cubemap.autoGenerateMips != config.generateMips) {
-                ReleaseCubemap();
-                cubemap = InitCubemap(res);
-            }
         }
 
         private RenderTexture InitCubemap(int res) {

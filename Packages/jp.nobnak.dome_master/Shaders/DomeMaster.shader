@@ -1,6 +1,5 @@
 ﻿Shader "Unlit/DomeMaster" {
     Properties {
-        _Lod ("LOD", Range(0, 32)) = 0
         [KeywordEnum(Forward, Backward)] _Dir ("Direction", float) = 0
     }
     SubShader {
@@ -33,7 +32,6 @@
             };
 
             UNITY_DECLARE_TEXCUBE(_DomeMasterCube);
-            float _Lod;
             
             v2f vert (appdata v) {
                 v2f o;
@@ -50,7 +48,7 @@
 
                 float3 v = DomeMaster_Decode(i.uv);
                 v = mul(unity_ObjectToWorld, float4(dir * v, 0));
-                float4 c = UNITY_SAMPLE_TEXCUBE_LOD(_DomeMasterCube, v, _Lod);
+                float4 c = UNITY_SAMPLE_TEXCUBE(_DomeMasterCube, v);
                 
                 float2 xy = 2.0 * i.uv - 1.0;
                 float r = sqrt(dot(xy, xy));

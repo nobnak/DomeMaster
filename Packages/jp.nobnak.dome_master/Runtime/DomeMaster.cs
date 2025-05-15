@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.Mathematics;
+using UnityEngine;
 using UnityEngine.Rendering;
 
 namespace DomeMasterSystem {
@@ -19,10 +20,13 @@ namespace DomeMasterSystem {
             _attachedCam.enabled = false;
         }
 		void Update() {
-			var res = (1 << Mathf.Clamp(config.lod, 1, 13));
-
-            if (!valid || _cubert == null || _cubert.width != res) {
+            if (!valid) {
                 valid = true;
+
+                config.lod = math.clamp(config.lod, 1, 13);
+                config.anisoLevel = math.clamp(config.anisoLevel, 0, 16);
+
+                var res = (1 << config.lod);
                 ReleaseCubemap();
                 _cubert = InitCubemap(res);
             }
@@ -84,6 +88,7 @@ namespace DomeMasterSystem {
             public bool generateMips = false;
             public int lod = 10;
             public FilterMode filterMode = FilterMode.Trilinear;
+            [Range(0, 16)]
             public int anisoLevel = 16;
             [InspectorFlags]
             public FaceMaskFlags faceMask = (FaceMaskFlags)(-1);

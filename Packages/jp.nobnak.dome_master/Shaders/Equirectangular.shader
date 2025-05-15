@@ -3,7 +3,6 @@
 
 Shader "Unlit/Equirectangular" {
     Properties {
-        _Lod ("LOD", Range(0, 32)) = 0
     }
     SubShader {
         Tags { "RenderType"="Opaque" }
@@ -33,7 +32,6 @@ Shader "Unlit/Equirectangular" {
             };
 
             UNITY_DECLARE_TEXCUBE(_DomeMasterCube);
-            float _Lod;
             float _Dir;
             
             v2f vert (appdata v) {
@@ -51,7 +49,7 @@ Shader "Unlit/Equirectangular" {
             fixed4 frag (v2f i) : SV_Target {
                 float3 v = EquiRectangular_Decode(i.uv);
                 v = mul(unity_ObjectToWorld, float4(v, 0));
-                float4 c = UNITY_SAMPLE_TEXCUBE_LOD(_DomeMasterCube, v, _Lod);
+                float4 c = UNITY_SAMPLE_TEXCUBE(_DomeMasterCube, v);
                 return c;
             }
             ENDCG
